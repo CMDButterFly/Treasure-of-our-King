@@ -1,0 +1,28 @@
+import os
+import time
+import sys
+#cwd=current work directory
+path=sys.argv[1]
+cwd='C:\K3_01_00_03__UI\Log'
+resultdict={}
+def geteverysize(pathname):
+    
+    dirs=os.listdir(pathname)
+    print(dirs)
+    for i in dirs:
+        if os.path.isfile(os.path.join(pathname,i)): #need to add abs path for avoiding default CWD working
+            resultdict[os.path.join(pathname,i)]=os.path.getsize(os.path.join(pathname,i))//1024  #convert to KB
+            print(os.path.join(pathname,i))
+        if os.path.isdir(os.path.join(pathname,i)):
+            geteverysize(os.path.join(pathname,i)) #recursion
+
+if __name__=='__main__':
+    
+    geteverysize(path)
+    with open(path+'result.csv','w+') as fp:
+        for i in resultdict:
+            fp.writelines(i+','+str(resultdict[i])+'\n')
+        
+    print('****************complete******************')
+    
+  
